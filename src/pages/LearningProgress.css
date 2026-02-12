@@ -1,0 +1,277 @@
+:root {
+  /* Palette matched to 'Unified Learning' screenshots */
+  --primary: #111827;
+  /* Very Dark Navy / Black */
+  --primary-hover: #1F2937;
+  --accent: #E5E7EB;
+  /* Light Gray for borders/backgrounds */
+  --bg-body: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-main: #111827;
+  --text-muted: #6B7280;
+  --border: #E5E7EB;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --radius: 8px;
+  /* Slightly squarer than before to match screenshots */
+}
+
+/* Base styles for the component scope */
+.learning-progress-page {
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.learning-progress-container {
+  max-width: 1000px;
+  /* Constrained width for a cleaner look */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Typography */
+.learning-progress-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.learning-progress-page h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.learning-progress-page p {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.subtitle {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Cards Generic */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+/* --- SECTION 1: OVERVIEW STATS --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.stat-icon {
+  /* Minimalist Icon Style */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  font-size: 1.2rem;
+}
+
+.stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.025em;
+}
+
+.stat-subtext {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* --- GOAL WIDGET (Moved to Stats) --- */
+.goal-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.goal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.goal-target {
+    font-size: 0.875rem; 
+    color: var(--text-muted); 
+    margin-bottom: 4px;
+}
+
+.goal-current {
+    font-size: 1.5rem; 
+    font-weight: 700;
+}
+
+
+/* --- SECTION 2: LEARNING ACTIVITY CHART --- */
+.chart-container {
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.chart-bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.chart-bar {
+  width: 100%;
+  background: #F3F4F6;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.chart-bar:hover {
+  background: var(--primary);
+}
+
+/* Highlight specific bars to break monotony */
+.chart-bar.active {
+  background: var(--primary);
+}
+
+.chart-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* --- SECTION 3: CURRENT COURSES --- */
+.courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Removing gap for a connected list look */
+}
+
+.course-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.course-item:first-child {
+  padding-top: 0;
+}
+
+.course-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.course-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius);
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.course-meta {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: #F3F4F6;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 99px;
+}
+
+.course-action {
+  padding: 0.625rem 1.25rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.course-action:hover {
+  background: var(--primary-hover);
+}
