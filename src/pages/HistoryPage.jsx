@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Badge from '../components/Badge';
 
 const HistoryPage = () => {
-    const historyData = [
+    const navigate = useNavigate();
+    const [historyData, setHistoryData] = useState([
         { id: 1, question: "Node.js Scalable APIs", date: "Oct 24", feedback: "Positive", status: "Completed", variant: "neutral" },
         { id: 2, question: "Rust Systems Programming", date: "Oct 22", feedback: "None", status: "In Progress", variant: "primary" },
         { id: 3, question: "React vs Vue Comparison", date: "Oct 15", feedback: "Mixed", status: "Archived", variant: "outline" },
         { id: 4, question: "AWS Solutions Architect", date: "Sep 30", feedback: "Positive", status: "Completed", variant: "neutral" },
-    ];
+    ]);
+
+    // Force re-render to check local storage updates when component mounts or updates
+    const [feedbackStatus, setFeedbackStatus] = useState({});
+
+    useEffect(() => {
+        const statuses = {};
+        historyData.forEach(item => {
+            if (localStorage.getItem(`course_feedback_${item.id}`)) {
+                statuses[item.id] = true;
+            }
+        });
+        setFeedbackStatus(statuses);
+    }, [historyData]);
+
+    const handleGiveFeedback = (e, courseId) => {
+        e.stopPropagation(); // Prevent row click
+        navigate(`/course-feedback/${courseId}`);
+    };
 
     return (
         <div className="max-w-4xl mx-auto space-y-6 pt-4">
@@ -19,7 +39,7 @@ const HistoryPage = () => {
                     <p className="text-slate-500 text-sm">Your past curricular generations.</p>
                 </div>
                 <div className="text-xs font-medium text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full shadow-sm">
-                    4 Items
+                    {historyData.length} Items
                 </div>
             </div>
 
@@ -56,6 +76,23 @@ const HistoryPage = () => {
                         </div>
 
                         <div className="flex items-center gap-6 flex-shrink-0 justify-between md:justify-end">
+                            {/* Feedback Button for ALL items */}
+                            {feedbackStatus[item.id] ? (
+                                <button
+                                    disabled
+                                    className="text-xs font-medium px-3 py-1.5 rounded-md bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
+                                >
+                                    Feedback Submitted
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={(e) => handleGiveFeedback(e, item.id)}
+                                    className="text-xs font-medium px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm"
+                                >
+                                    Give Feedback
+                                </button>
+                            )}
+
                             <Badge variant={item.variant} className="w-24 justify-center py-1">{item.status}</Badge>
                             <div className="text-slate-200 group-hover:text-slate-400 transition-colors transform group-hover:translate-x-1 duration-200">
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" /></svg>

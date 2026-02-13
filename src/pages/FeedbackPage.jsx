@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
 import './FeedbackPage.css';
@@ -6,8 +6,6 @@ import './FeedbackPage.css';
 const FeedbackPage = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
         category: 'general',
         rating: 0,
         comment: ''
@@ -41,7 +39,7 @@ const FeedbackPage = () => {
             <button onClick={() => navigate('/')} className="btn-back">
                 <ArrowLeft size={16} /> Back to Dashboard
             </button>
-            
+
             <div className="feedback-container">
                 <div className="feedback-header">
                     <h1>We Value Your Feedback</h1>
@@ -49,33 +47,7 @@ const FeedbackPage = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="feedback-form">
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            className="form-control"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            placeholder="Your Name"
-                        />
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            className="form-control"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            placeholder="your.email@example.com"
-                        />
-                    </div>
 
                     <div className="form-group">
                         <label htmlFor="category">Feedback Category</label>

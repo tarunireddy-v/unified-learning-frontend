@@ -51,3 +51,15 @@ export const fetchLearningData = async () => {
         }
     };
 };
+
+export const fetchProfileData = async () => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 600));
+
+    return {
+        name: "Mary",
+        email: "mary@gmail.com",
+        bio: "Computer Science student passionate about AI and Web Development. Currently learning React and Cloud Computing.",
+        skills: ["React", "JavaScript", "Python", "UI/UX Design", "Machine Learning"]
+    };
+};

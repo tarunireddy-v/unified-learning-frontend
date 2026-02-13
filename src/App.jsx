@@ -8,6 +8,8 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import LearningProgress from './pages/LearningProgress';
 import FeedbackPage from './pages/FeedbackPage';
+import ProfilePage from './pages/ProfilePage';
+import CourseFeedback from './pages/CourseFeedback';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/learningprogress" element={<LearningProgress />} />
           <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/course-feedback/:courseId" element={<CourseFeedback />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

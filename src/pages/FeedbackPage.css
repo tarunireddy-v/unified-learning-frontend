@@ -81,20 +81,23 @@ textarea.form-control {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #cbd5e1; /* slate-300 */
+    color: #cbd5e1;
+    /* slate-300 */
     transition: color 0.15s;
     padding: 0;
 }
 
 .star-btn.active,
 .star-btn:hover {
-    color: #eab308; /* yellow-500 */
+    color: #eab308;
+    /* yellow-500 */
 }
 
 .btn-submit {
     margin-top: 1rem;
     padding: 0.75rem 1.5rem;
-    background-color: var(--primary);
+    background-color: #0f172a;
+    /* Navy Blue (Slate 900) */
     color: white;
     border: none;
     border-radius: 6px;
@@ -105,7 +108,8 @@ textarea.form-control {
 }
 
 .btn-submit:hover {
-    background-color: var(--primary-hover);
+    background-color: #1e293b;
+    /* Slate 800 */
 }
 
 .btn-back {
