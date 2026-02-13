@@ -7,6 +7,8 @@ import RecommendationResultsPage from './pages/RecommendationResultsPage';
 import HistoryPage from './pages/HistoryPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import LearningProgress from './components/LearningProgress';
+import FeedbackPage from './components/FeedbackPage';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/learningprogress" element={<LearningProgress />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
