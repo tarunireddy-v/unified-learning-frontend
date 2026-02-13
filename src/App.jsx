@@ -7,8 +7,8 @@ import RecommendationResultsPage from './pages/RecommendationResultsPage';
 import HistoryPage from './pages/HistoryPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import LearningProgress from './components/LearningProgress';
-import FeedbackPage from './components/FeedbackPage';
+import LearningProgress from './pages/LearningProgress';
+import FeedbackPage from './pages/FeedbackPage';
 
 function App() {
   return (
