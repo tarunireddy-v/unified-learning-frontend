@@ -40,8 +40,11 @@ const Layout = ({ children }) => {
                     {/* Right: Navigation + Profile */}
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-1">
-                            {['/recommendations', '/history'].map((path) => {
-                                const label = path === '/recommendations' ? 'Recommendations' : 'History';
+                            {['/recommendations', '/history', '/learningprogress', '/feedback'].map((path) => {
+                                const label = path === '/recommendations' ? 'Recommendations'
+                                    : path === '/history' ? 'History'
+                                        : path === '/learningprogress' ? 'Progress'
+                                            : 'Feedback';
                                 const active = isActive(path);
 
                                 return (
@@ -51,7 +54,7 @@ const Layout = ({ children }) => {
                                         className={`
                                 text-[14px] font-medium px-3 py-2 rounded-md transition-all duration-200
                                 ${active
-                                                ? 'text-slate-900'
+                                                ? 'text-slate-900 bg-slate-100'
                                                 : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/50'
                                             }
                             `}
