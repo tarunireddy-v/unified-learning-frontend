@@ -55,7 +55,7 @@ const LandingPage = () => {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
                         <Button
                             variant="primary"
-                            onClick={() => navigate('/ask')}
+                            onClick={() => navigate('/recommendations')}
                             className="px-8 h-12 text-[15px] shadow-xl shadow-slate-900/10 hover:shadow-slate-900/20 hover:-translate-y-0.5 transition-all duration-300"
                         >
                             Start Learning Path
