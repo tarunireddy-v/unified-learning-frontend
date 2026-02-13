@@ -1,333 +1,275 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 :root {
-  --primary-navy: #0F2B5B;
-  --secondary-navy: #1F3C88;
-  --bg-gradient-start: #EAF3FF;
-  --bg-gradient-end: #F5F9FF;
-  --progress-track: #D6E6FA;
-  --card-shadow: 0 4px 20px rgba(15, 43, 91, 0.05);
-  --text-main: #0F2B5B;
-  --text-muted: #5A6B8C;
+  --navy-dark: #0F2B5B;
+  --navy-secondary: #1F3C88;
+  --blue-bg-light: #EAF3FF;
+  --blue-bg-lighter: #F5F9FF;
+  --blue-track: #D6E6FA;
+  --text-muted: #64748B;
   --white: #FFFFFF;
-  --danger: #FF6B6B; /* Kept for potential use */
+  --shadow-soft: 0 4px 24px rgba(15, 43, 91, 0.06);
+  --border-radius-card: 16px;
+  --border-radius-btn: 8px;
 }
-
-.learning-progress-page {
+body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-  color: var(--text-main);
-  padding: 2rem;
-  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--blue-bg-light) 0%, var(--blue-bg-lighter) 100%);
+  color: var(--navy-dark);
 }
-
-.learning-dashboard {
+.learning-dashboard-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 3rem 2rem;
 }
-
 /* Header */
 .dashboard-header {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
-
 .dashboard-header h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
+  color: var(--navy-dark);
   margin: 0 0 0.5rem 0;
-  color: var(--primary-navy);
+  letter-spacing: -0.02em;
 }
-
-.dashboard-header .subtitle {
+.dashboard-header p {
+  font-size: 1.1rem;
   color: var(--text-muted);
-  font-size: 1rem;
   margin: 0;
 }
-
-/* Metrics Grid */
-.metrics-grid {
+/* Stats Grid */
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
-
-.metric-card {
+.stat-card {
   background: var(--white);
-  border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: var(--card-shadow);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 140px;
   transition: transform 0.2s ease;
 }
-
-.metric-card:hover {
-  transform: translateY(-2px);
+.stat-card:hover {
+  transform: translateY(-4px);
 }
-
-.metric-icon-container {
-  width: 40px;
-  height: 40px;
+.stat-icon-wrapper {
   margin-bottom: 1rem;
-  color: var(--primary-navy);
+  color: var(--navy-dark);
 }
-
-.metric-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.metric-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--primary-navy);
-  margin-bottom: 0.25rem;
-}
-
-.metric-label {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* Goal Card Specifics */
-.goal-card {
-  justify-content: flex-start;
-}
-
-.metric-header-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.metric-header-row .metric-icon-container {
-  margin-bottom: 0;
+.stat-icon {
   width: 24px;
   height: 24px;
 }
-
-.goal-text {
+.stat-label {
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--primary-navy);
-}
-
-.goal-progress-section {
-  margin-top: auto;
-}
-
-.goal-numbers {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.goal-current {
-  font-weight: 700;
-  color: var(--primary-navy);
-}
-
-.goal-target {
   color: var(--text-muted);
+  margin: 0 0 0.5rem 0;
 }
-
-.progress-track {
-  background-color: var(--progress-track);
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy-dark);
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
 }
-
-.progress-fill {
-  background-color: var(--primary-navy);
-  height: 100%;
-  border-radius: 4px;
-}
-
-/* Content Grid (Chart + Courses) */
-.dashboard-content-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-@media (max-width: 900px) {
-  .dashboard-content-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.card-base {
-  background: var(--white);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: var(--card-shadow);
-}
-
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--primary-navy);
-  margin: 0 0 1.5rem 0;
-}
-
-/* Chart */
-.chart-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 200px;
-  padding-top: 1rem;
-}
-
-.chart-bar-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-
-.bar-track {
-  flex-grow: 1;
-  width: 8px;
-  background-color: transparent; /* Invisible track mostly */
-  display: flex;
-  align-items: flex-end;
-  border-radius: 4px; /* For rounded tops if we wanted a track bg */
-  margin-bottom: 0.75rem;
-  position: relative;
-}
-
-/* Optional: faint lines for graph context could be added here, currently kept clean as requested */
-
-.bar-fill {
-  width: 100%;
-  background-color: #DAE4F2; /* Soft blue-gray for inactive */
-  border-radius: 4px;
-  transition: height 0.3s ease;
-}
-
-.bar-fill.active {
-  background-color: var(--secondary-navy);
-}
-
-.bar-label {
-  font-size: 0.75rem;
+.stat-subtext {
+  font-size: 0.8rem;
   color: var(--text-muted);
   font-weight: 500;
 }
-
-/* Courses List */
+.stat-subtext.positive {
+  color: #10B981;
+  /* Green for positive change */
+}
+/* Goal specific */
+.goal-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.goal-target {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: var(--blue-track);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: auto;
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--navy-dark);
+  border-radius: 4px;
+}
+/* Sections Common */
+.dashboard-section {
+  background: var(--white);
+  border-radius: var(--border-radius-card);
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 2rem;
+}
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin: 0 0 2rem 0;
+}
+/* Activity Graph */
+.activity-graph-placeholder {
+  position: relative;
+  height: 200px;
+  padding-bottom: 2rem;
+}
+.graph-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.graph-line {
+  width: 100%;
+  height: 1px;
+  background-color: #E2E8F0;
+}
+.graph-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 100%;
+  padding: 0 1rem;
+}
+.graph-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+.graph-bar {
+  width: 16px;
+  background-color: var(--navy-secondary);
+  /* or just navy */
+  border-radius: 8px;
+  opacity: 0.2;
+  /* Muted bars? Or filled? Prompt says 'Minimal graph styling, light gray-blue lines' but 'Fill: navy blue' was for progress bars. Let's use navy for bars. */
+  background-color: var(--navy-dark);
+  /* Using main navy */
+  opacity: 1;
+}
+.day-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+/* Active Courses */
 .courses-list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
-
-.course-row {
+.course-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #F0F4F8;
+  border-bottom: 1px solid #F1F5F9;
 }
-
-.course-row:last-child {
-  padding-bottom: 0;
+.course-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
-
 .course-icon-box {
-  width: 48px;
-  height: 48px;
-  background-color: var(--bg-gradient-start);
+  width: 56px;
+  height: 56px;
+  background-color: var(--blue-bg-light);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-navy);
+  color: var(--navy-dark);
   flex-shrink: 0;
 }
-
-.course-icon {
-  width: 24px;
-  height: 24px;
+.course-icon-box svg {
+  width: 28px;
+  height: 28px;
 }
-
 .course-details {
   flex-grow: 1;
 }
-
 .course-title {
-  font-weight: 600;
-  color: var(--primary-navy);
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin: 0 0 0.25rem 0;
 }
-
 .course-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  margin: 0 0 1rem 0;
 }
-
 .course-progress-track {
-  height: 6px;
-  background-color: var(--progress-track);
-  border-radius: 3px;
   width: 100%;
-  max-width: 200px;
+  max-width: 300px;
+  height: 6px;
+  background-color: var(--blue-track);
+  border-radius: 3px;
   overflow: hidden;
 }
-
 .course-progress-fill {
   height: 100%;
-  background-color: var(--primary-navy);
+  background-color: var(--navy-dark);
   border-radius: 3px;
 }
-
 .course-action-btn {
-  background-color: var(--primary-navy);
+  background-color: var(--navy-dark);
   color: var(--white);
   border: none;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-btn);
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(15, 43, 91, 0.2);
+  transition: background-color 0.2s;
+  min-width: 100px;
 }
-
 .course-action-btn:hover {
-  background-color: var(--secondary-navy);
-  box-shadow: 0 4px 8px rgba(15, 43, 91, 0.3);
+  background-color: var(--navy-secondary);
 }
-
-/* Loading State */
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid var(--progress-track);
-  border-top: 4px solid var(--primary-navy);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .course-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .course-action-btn {
+    width: 100%;
+  }
+  .course-progress-track {
+    max-width: 100%;
+  }
 }
