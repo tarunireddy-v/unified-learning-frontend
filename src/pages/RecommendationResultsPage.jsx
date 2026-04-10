@@ -17,8 +17,11 @@ const RecommendationResultsPage = () => {
   const [queryId, setQueryId] = useState("");
   const [feedbackSelection, setFeedbackSelection] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState("");
+<<<<<<< HEAD
   const [hasSearched, setHasSearched] = useState(false);
   const [duration, setDuration] = useState("");
+=======
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
 
   useEffect(() => {
     // Reset feedback actions when a new query is submitted.
@@ -35,7 +38,10 @@ const RecommendationResultsPage = () => {
     setLoading(true);
     setError("");
     setFeedbackMessage("");
+<<<<<<< HEAD
     setHasSearched(true);
+=======
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
 
     try {
       const response = await recommendCourses(formData);
@@ -92,6 +98,7 @@ const RecommendationResultsPage = () => {
               required
               className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-slate-300 focus:bg-white transition-all min-h-[96px] resize-none text-sm leading-relaxed"
             />
+<<<<<<< HEAD
             
             <div className="mt-4">
               <Select
@@ -109,6 +116,11 @@ const RecommendationResultsPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+=======
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
             <Select
               label="Level"
               value={formData.level}
@@ -120,6 +132,20 @@ const RecommendationResultsPage = () => {
               ]}
             />
             <Select
+<<<<<<< HEAD
+=======
+              label="Duration"
+              value={formData.duration}
+              onChange={(e) => handleInputChange("duration", e.target.value)}
+              options={[
+                { value: "1 month", label: "1 month" },
+                { value: "2 months", label: "2 months" },
+                { value: "3 months", label: "3 months" },
+                { value: "6 months", label: "6 months" },
+              ]}
+            />
+            <Select
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
               label="Goal"
               value={formData.goal}
               onChange={(e) => handleInputChange("goal", e.target.value)}
@@ -164,18 +190,25 @@ const RecommendationResultsPage = () => {
           </div>
         )}
 
+<<<<<<< HEAD
         {!loading && recommendations.length === 0 && !error && !hasSearched && (
+=======
+        {!loading && recommendations.length === 0 && !error && (
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
           <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-8 text-center text-slate-500">
             Submit a query to see recommendations.
           </div>
         )}
 
+<<<<<<< HEAD
         {!loading && recommendations.length === 0 && !error && hasSearched && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-8 text-center text-slate-500">
             No courses found
           </div>
         )}
 
+=======
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
         <div className="space-y-4">
           {recommendations.map((item, index) => {
             const selectedFeedback = feedbackSelection[index];
@@ -184,6 +217,7 @@ const RecommendationResultsPage = () => {
             return (
               <Card key={`${item.title}-${index}`} variant="default" className="p-5 bg-white">
                 <div className="space-y-3">
+<<<<<<< HEAD
                   <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
@@ -194,6 +228,15 @@ const RecommendationResultsPage = () => {
                       Duration: {item.duration}
                     </div>
                   </div>
+=======
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                    <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
+                    <div className="text-sm text-slate-500">
+                      {item.platform} • {item.duration}
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed">{item.reason}</p>
+>>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
 
                   <div className="flex items-center gap-2 pt-2">
                     <Button
