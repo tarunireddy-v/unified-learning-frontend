@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "http://13.232.86.171:8000";
 
 async function handleApiResponse(response) {
   if (!response.ok) {
@@ -20,11 +20,7 @@ async function handleApiResponse(response) {
 }
 
 export async function recommendCourses(data) {
-<<<<<<< HEAD
-  const response = await fetch(`http://127.0.0.1:8000/recommend`, {
-=======
   const response = await fetch(`${API_BASE_URL}/recommend`, {
->>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,11 +32,7 @@ export async function recommendCourses(data) {
 }
 
 export async function sendFeedback(query_id, feedback) {
-<<<<<<< HEAD
-  const response = await fetch(`http://127.0.0.1:8000/feedback`, {
-=======
   const response = await fetch(`${API_BASE_URL}/feedback`, {
->>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,4 +42,3 @@ export async function sendFeedback(query_id, feedback) {
 
   return handleApiResponse(response);
 }
-
