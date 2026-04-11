@@ -1,5 +1,5 @@
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || "http://13.232.86.171:8000"
+  import.meta.env.VITE_API_URL || "https://custody-imprecise-sloping.ngrok-free.dev"
 ).replace(/\/$/, "");
 
 async function handleApiResponse(response) {
