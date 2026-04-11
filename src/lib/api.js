@@ -9,9 +9,7 @@ async function handleApiResponse(response) {
       if (errorPayload?.detail) {
         message = String(errorPayload.detail);
       }
-    } catch {
-      // Keep default message when response body is not JSON.
-    }
+    } catch {}
 
     throw new Error(message);
   }
