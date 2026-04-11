@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 :root {
   --navy-dark: #0F2B5B;
@@ -23,7 +22,6 @@ body {
   margin: 0 auto;
   padding: 3rem 2rem;
 }
-/* Header */
 .dashboard-header {
   margin-bottom: 3rem;
 }
@@ -39,7 +37,6 @@ body {
   color: var(--text-muted);
   margin: 0;
 }
-/* Stats Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -86,9 +83,7 @@ body {
 }
 .stat-subtext.positive {
   color: #10B981;
-  /* Green for positive change */
 }
-/* Goal specific */
 .goal-value-row {
   display: flex;
   align-items: baseline;
@@ -113,7 +108,6 @@ body {
   background-color: var(--navy-dark);
   border-radius: 4px;
 }
-/* Sections Common */
 .dashboard-section {
   background: var(--white);
   border-radius: var(--border-radius-card);
@@ -127,7 +121,6 @@ body {
   color: var(--navy-dark);
   margin: 0 0 2rem 0;
 }
-/* Activity Graph */
 .activity-graph-placeholder {
   position: relative;
   height: 200px;
@@ -165,13 +158,8 @@ body {
 }
 .graph-bar {
   width: 16px;
-  background-color: var(--navy-secondary);
-  /* or just navy */
-  border-radius: 8px;
-  opacity: 0.2;
-  /* Muted bars? Or filled? Prompt says 'Minimal graph styling, light gray-blue lines' but 'Fill: navy blue' was for progress bars. Let's use navy for bars. */
   background-color: var(--navy-dark);
-  /* Using main navy */
+  border-radius: 8px;
   opacity: 1;
 }
 .day-label {
@@ -179,7 +167,6 @@ body {
   color: var(--text-muted);
   font-weight: 500;
 }
-/* Active Courses */
 .courses-list {
   display: flex;
   flex-direction: column;
@@ -253,283 +240,54 @@ body {
 .course-action-btn:hover {
   background-color: var(--navy-secondary);
 }
-/* Responsive */
-@media (max-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-  .course-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .course-action-btn {
-    width: 100%;
-  }
-  .course-progress-track {
-    max-width: 100%;
-  }
-}
-=======
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-:root {
-  --navy-dark: #0F2B5B;
-  --navy-secondary: #1F3C88;
-  --blue-bg-light: #EAF3FF;
-  --blue-bg-lighter: #F5F9FF;
-  --blue-track: #D6E6FA;
-  --text-muted: #64748B;
-  --white: #FFFFFF;
-  --shadow-soft: 0 4px 24px rgba(15, 43, 91, 0.06);
-  --border-radius-card: 16px;
-  --border-radius-btn: 8px;
-}
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(180deg, var(--blue-bg-light) 0%, var(--blue-bg-lighter) 100%);
-  color: var(--navy-dark);
-}
-.learning-dashboard-container {
+.dashboard-loading,
+.dashboard-error {
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
-}
-/* Header */
-.dashboard-header {
-  margin-bottom: 3rem;
-}
-.dashboard-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--navy-dark);
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.02em;
-}
-.dashboard-header p {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-.stat-card {
-  background: var(--white);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease;
-}
-.stat-card:hover {
-  transform: translateY(-4px);
-}
-.stat-icon-wrapper {
-  margin-bottom: 1rem;
+  text-align: center;
   color: var(--navy-dark);
 }
-.stat-icon {
-  width: 24px;
-  height: 24px;
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--blue-track);
+  border-top-color: var(--navy-dark);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: learning-spin 0.8s linear infinite;
 }
-.stat-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin: 0 0 0.5rem 0;
+@keyframes learning-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
-.stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--navy-dark);
-  line-height: 1.2;
-  margin-bottom: 0.25rem;
-}
-.stat-subtext {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.stat-subtext.positive {
-  color: #10B981;
-  /* Green for positive change */
-}
-/* Goal specific */
-.goal-value-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-.goal-target {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.progress-bar-container {
-  width: 100%;
-  height: 8px;
-  background-color: var(--blue-track);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: auto;
-}
-.progress-bar-fill {
-  height: 100%;
-  background-color: var(--navy-dark);
-  border-radius: 4px;
-}
-/* Sections Common */
-.dashboard-section {
-  background: var(--white);
-  border-radius: var(--border-radius-card);
-  padding: 2rem;
-  box-shadow: var(--shadow-soft);
-  margin-bottom: 2rem;
-}
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--navy-dark);
-  margin: 0 0 2rem 0;
-}
-/* Activity Graph */
-.activity-graph-placeholder {
-  position: relative;
-  height: 200px;
-  padding-bottom: 2rem;
-}
-.graph-lines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  pointer-events: none;
-}
-.graph-line {
-  width: 100%;
-  height: 1px;
-  background-color: #E2E8F0;
-}
-.graph-bars {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 100%;
-  padding: 0 1rem;
-}
-.graph-bar-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  flex: 1;
-}
-.graph-bar {
-  width: 16px;
-  background-color: var(--navy-secondary);
-  /* or just navy */
-  border-radius: 8px;
-  opacity: 0.2;
-  /* Muted bars? Or filled? Prompt says 'Minimal graph styling, light gray-blue lines' but 'Fill: navy blue' was for progress bars. Let's use navy for bars. */
-  background-color: var(--navy-dark);
-  /* Using main navy */
-  opacity: 1;
-}
-.day-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-/* Active Courses */
-.courses-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.course-item {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #F1F5F9;
-}
-.course-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-.course-icon-box {
-  width: 56px;
-  height: 56px;
-  background-color: var(--blue-bg-light);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--navy-dark);
-  flex-shrink: 0;
-}
-.course-icon-box svg {
-  width: 28px;
-  height: 28px;
-}
-.course-details {
-  flex-grow: 1;
-}
-.course-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--navy-dark);
-  margin: 0 0 0.25rem 0;
-}
-.course-subtitle {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin: 0 0 1rem 0;
-}
-.course-progress-track {
-  width: 100%;
-  max-width: 300px;
-  height: 6px;
-  background-color: var(--blue-track);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.course-progress-fill {
-  height: 100%;
-  background-color: var(--navy-dark);
-  border-radius: 3px;
-}
-.course-action-btn {
-  background-color: var(--navy-dark);
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--navy-dark);
   color: var(--white);
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius-btn);
   font-weight: 600;
-  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s;
-  min-width: 100px;
 }
-.course-action-btn:hover {
-  background-color: var(--navy-secondary);
+.retry-btn:hover {
+  background: var(--navy-secondary);
 }
-/* Responsive */
+.animate-fade-in-up {
+  animation: learning-fade-in-up 0.4s ease-out;
+}
+@keyframes learning-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @media (max-width: 1024px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -550,4 +308,3 @@ body {
     max-width: 100%;
   }
 }
->>>>>>> d29d898be73ddd6bf85f910fdf307d9cdcf38c19

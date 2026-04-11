@@ -1,4 +1,6 @@
-const API_BASE_URL = "http://13.232.86.171:8000";
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_URL || "http://13.232.86.171:8000"
+).replace(/\/$/, "");
 
 async function handleApiResponse(response) {
   if (!response.ok) {
