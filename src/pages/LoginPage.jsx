@@ -3,17 +3,40 @@ import { Link, useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { loginApi } from '../lib/api';
 
-const LoginPage = () => {
+const LoginPage = ({ handleLogin }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Mock login logic
-        console.log('Login attempt:', { email, password });
-        navigate('/');
+        setError('');
+        
+        if (password.length > 72) {
+            setError('Password too long (max 72 characters)');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const data = await loginApi(email, password);
+            if (data && data.success === false) {
+                throw new Error(data.message || 'Login failed.');
+            }
+            if (handleLogin) {
+                const userObj = data.user || { name: email.split('@')[0], email: email };
+                handleLogin(userObj);
+                navigate('/dashboard');
+            }
+        } catch (err) {
+            setError(err.message || 'Login failed. Please check your credentials.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -29,6 +52,11 @@ const LoginPage = () => {
 
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Card className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    {error && (
+                        <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-sm text-red-600 text-center">
+                            {error}
+                        </div>
+                    )}
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <Input
                             label="Email address"
@@ -71,9 +99,10 @@ const LoginPage = () => {
                         <div>
                             <Button
                                 type="submit"
-                                className="w-full flex justify-center py-2 px-4 shadow-xl shadow-slate-900/5 hover:shadow-slate-900/10"
+                                disabled={isLoading}
+                                className="w-full flex justify-center py-2 px-4 shadow-xl shadow-slate-900/5 hover:shadow-slate-900/10 disabled:opacity-50"
                             >
-                                Sign in
+                                {isLoading ? 'Signing in...' : 'Sign in'}
                             </Button>
                         </div>
                     </form>

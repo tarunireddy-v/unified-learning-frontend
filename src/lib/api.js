@@ -1,8 +1,8 @@
 /**
  * API base for fetch():
- * - If VITE_API_URL is set → use it (ngrok, staging, production builds).
- * - Else in dev → "/api" (Vite proxy → FastAPI, same origin as the dev server).
- * - Else (preview/build without env) → direct local FastAPI.
+ * - If VITE_API_URL is set -> use it (ngrok, staging, production builds).
+ * - Else in dev -> "/api" (Vite proxy -> FastAPI, same origin as the dev server).
+ * - Else (preview/build without env) -> direct local FastAPI.
  */
 const trimmed = (import.meta.env.VITE_API_URL || "").trim().replace(/\/$/, "");
 
@@ -18,7 +18,9 @@ async function handleApiResponse(response) {
 
     try {
       const errorPayload = await response.json();
-      if (errorPayload?.detail) {
+      if (errorPayload?.message) {
+        message = String(errorPayload.message);
+      } else if (errorPayload?.detail) {
         message = String(errorPayload.detail);
       }
     } catch {}
@@ -68,5 +70,40 @@ export async function sendFeedback(query_id, feedback) {
     body: JSON.stringify({ query_id, feedback }),
   });
 
+  return handleApiResponse(response);
+}
+
+export async function loginApi(email, password) {
+  const response = await apiFetch("/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  return handleApiResponse(response);
+}
+
+export async function signupApi(name, email, password) {
+  const response = await apiFetch("/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password }),
+  });
+  return handleApiResponse(response);
+}
+
+export async function getProfileApi() {
+  const response = await apiFetch("/profile", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  return handleApiResponse(response);
+}
+
+export async function updateProfileApi(data) {
+  const response = await apiFetch("/profile", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
   return handleApiResponse(response);
 }

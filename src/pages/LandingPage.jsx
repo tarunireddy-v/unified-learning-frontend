@@ -14,25 +14,6 @@ const LandingPage = () => {
                 <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
                     <div className="absolute -top-[20%] -left-[10%] w-[800px] h-[800px] bg-sky-100/40 rounded-full blur-[120px] mix-blend-multiply opacity-60"></div>
                     <div className="absolute top-[40%] -right-[20%] w-[600px] h-[600px] bg-indigo-50/40 rounded-full blur-[100px] mix-blend-multiply opacity-60"></div>
-                    <div className="absolute top-[30%] left-[10%] lg:left-[15%] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
-                        <div className="relative w-48 h-32 bg-white/40 border border-slate-200/60 rounded-xl backdrop-blur-sm -rotate-6 transform transition-transform duration-[2000ms] group-hover:-translate-y-4 shadow-sm">
-                            <div className="absolute top-4 left-4 w-8 h-8 rounded-lg bg-sky-100/50"></div>
-                            <div className="absolute bottom-4 left-4 right-4 h-2 rounded-full bg-slate-100"></div>
-                            <div className="absolute bottom-8 left-4 right-8 h-2 rounded-full bg-slate-100"></div>
-                        </div>
-                        <svg className="absolute top-full left-1/2 w-px h-24 text-slate-300" strokeDasharray="4 4">
-                            <line x1="0" y1="0" x2="0" y2="100%" stroke="currentColor" />
-                        </svg>
-                    </div>
-                    <div className="absolute bottom-[30%] right-[10%] lg:right-[15%] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out delay-100">
-                        <div className="relative w-40 h-40 border border-slate-200/50 rounded-full flex items-center justify-center animate-[spin_60s_linear_infinite]">
-                            <div className="absolute w-full h-full border border-slate-100/50 rounded-full scale-125"></div>
-                            <div className="w-4 h-4 rounded-full bg-slate-800 shadow-lg shadow-slate-900/20"></div>
-                            <div className="absolute top-0 w-2 h-2 rounded-full bg-slate-300"></div>
-                            <div className="absolute bottom-0 w-2 h-2 rounded-full bg-slate-300"></div>
-                        </div>
-                    </div>
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015] mix-blend-overlay"></div>
                 </div>
 
                 <div className="max-w-3xl mx-auto space-y-10 px-6 relative z-10 flex flex-col items-center text-center">
@@ -55,16 +36,17 @@ const LandingPage = () => {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
                         <Button
                             variant="primary"
-                            onClick={() => navigate('/recommendations')}
+                            onClick={() => navigate('/login')}
                             className="px-8 h-12 text-[15px] shadow-xl shadow-slate-900/10 hover:shadow-slate-900/20 hover:-translate-y-0.5 transition-all duration-300"
                         >
                             Start Learning Path
                         </Button>
                         <Button
                             variant="ghost"
+                            onClick={() => navigate('/recommendations')}
                             className="text-slate-500 hover:text-slate-900 h-12"
                         >
-                            View System Logic
+                            Explore Recommendations
                         </Button>
                     </div>
                 </div>
