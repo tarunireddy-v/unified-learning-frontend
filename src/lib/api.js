@@ -1,6 +1,16 @@
-export const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || "https://custody-imprecise-sloping.ngrok-free.dev"
-).replace(/\/$/, "");
+/**
+ * API base for fetch():
+ * - If VITE_API_URL is set → use it (ngrok, staging, production builds).
+ * - Else in dev → "/api" (Vite proxy → FastAPI, same origin as the dev server).
+ * - Else (preview/build without env) → direct local FastAPI.
+ */
+const trimmed = (import.meta.env.VITE_API_URL || "").trim().replace(/\/$/, "");
+
+export const API_BASE_URL = trimmed
+  ? trimmed
+  : import.meta.env.DEV
+    ? "/api"
+    : "http://127.0.0.1:8000";
 
 async function handleApiResponse(response) {
   if (!response.ok) {
@@ -19,8 +29,26 @@ async function handleApiResponse(response) {
   return response.json();
 }
 
+const NETWORK_HINT =
+  "Could not reach the API. Start FastAPI on port 8000 (wait until you see \"Application startup complete\"), " +
+  "and restart \"npm run dev\" if you changed Vite env.";
+
+/** @param {string} path e.g. "/recommend" */
+export async function apiFetch(path, init) {
+  const url = `${API_BASE_URL}${path}`;
+  try {
+    return await fetch(url, init);
+  } catch (e) {
+    const name = e && typeof e === "object" && "name" in e ? e.name : "";
+    if (name === "TypeError") {
+      throw new Error(NETWORK_HINT);
+    }
+    throw e instanceof Error ? e : new Error(NETWORK_HINT);
+  }
+}
+
 export async function recommendCourses(data) {
-  const response = await fetch(`${API_BASE_URL}/recommend`, {
+  const response = await apiFetch("/recommend", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +60,7 @@ export async function recommendCourses(data) {
 }
 
 export async function sendFeedback(query_id, feedback) {
-  const response = await fetch(`${API_BASE_URL}/feedback`, {
+  const response = await apiFetch("/feedback", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

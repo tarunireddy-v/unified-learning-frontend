@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
-import { API_BASE_URL } from '../lib/api';
+import { apiFetch } from '../lib/api';
 import './FeedbackPage.css';
 
 const FeedbackPage = () => {
@@ -39,7 +39,7 @@ const FeedbackPage = () => {
                 comment: formData.comment
             };
 
-            const response = await fetch(`${API_BASE_URL}/feedback`, {
+            const response = await apiFetch('/feedback', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

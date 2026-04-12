@@ -4,6 +4,31 @@ import Button from "../components/Button";
 import Select from "../components/Select";
 import { recommendCourses, sendFeedback } from "../lib/api";
 
+function courseExternalUrl(raw) {
+  const u = (raw || "").trim();
+  if (!u) return null;
+  return /^https?:\/\//i.test(u) ? u : null;
+}
+
+/** Hide description/reason when it is only a duplicate URL (common for API-backed rows). */
+function shouldShowDetailText(text, href) {
+  const t = (text || "").trim();
+  if (!t) return false;
+  if (/^https?:\/\//i.test(t)) return false;
+  const h = (href || "").trim();
+  if (h && t === h) return false;
+  return true;
+}
+
+const titleLinkClass =
+  "text-slate-900 font-semibold no-underline cursor-pointer hover:underline hover:text-slate-800 underline-offset-2 decoration-slate-400 transition-colors";
+
+const RANK_BADGES = [
+  { label: "1st", className: "bg-amber-100 text-amber-950 ring-amber-300/90" },
+  { label: "2nd", className: "bg-slate-100 text-slate-800 ring-slate-300/80" },
+  { label: "3rd", className: "bg-orange-100 text-orange-950 ring-orange-300/80" },
+];
+
 const RecommendationResultsPage = () => {
   const [formData, setFormData] = useState({
     query: "",
@@ -176,42 +201,76 @@ const RecommendationResultsPage = () => {
             const selectedFeedback = feedbackSelection[index];
             const disabled = Boolean(selectedFeedback);
             const detailText = item.description || item.reason;
+            const href = courseExternalUrl(item.url);
+            const showDetail = shouldShowDetailText(detailText, href);
+
+            const rankBadge = index < 3 ? RANK_BADGES[index] : null;
 
             return (
               <Card key={`${item.title}-${index}`} variant="default" className="p-5 bg-white">
                 <div className="space-y-3">
                   <div className="flex flex-col gap-2">
-                    <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-                    {detailText ? (
+                    <h3 className="text-lg font-semibold text-slate-900 leading-snug">
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={titleLinkClass}
+                          title="Open course in a new tab"
+                        >
+                          {item.title}
+                        </a>
+                      ) : (
+                        item.title
+                      )}
+                    </h3>
+                    {showDetail ? (
                       <p className="text-sm text-slate-600 leading-relaxed">{detailText}</p>
                     ) : null}
                     <div className="text-sm text-slate-500 font-medium mt-1">
-                      Platform: {item.platform || "Udemy"}
+                      Platform: {item.platform || "—"}
                     </div>
-                    {item.duration ? (
+                    {item.duration &&
+                    String(item.duration).trim().toLowerCase() !== "short" ? (
                       <div className="text-sm text-slate-500 font-medium">
                         Duration: {item.duration}
                       </div>
                     ) : null}
+                    {item.explanation ? (
+                      <p className="text-xs text-slate-500 leading-relaxed border-t border-slate-100 pt-3 mt-1">
+                        {item.explanation}
+                      </p>
+                    ) : null}
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2">
-                    <Button
-                      variant={selectedFeedback === "helpful" ? "primary" : "secondary"}
-                      disabled={disabled}
-                      onClick={() => handleFeedback(index, "helpful")}
-                      className="h-9 px-4"
-                    >
-                      👍 Helpful
-                    </Button>
-                    <Button
-                      variant={selectedFeedback === "not_helpful" ? "primary" : "secondary"}
-                      disabled={disabled}
-                      onClick={() => handleFeedback(index, "not_helpful")}
-                      className="h-9 px-4"
-                    >
-                      👎 Not Helpful
-                    </Button>
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Button
+                        variant={selectedFeedback === "helpful" ? "primary" : "secondary"}
+                        disabled={disabled}
+                        onClick={() => handleFeedback(index, "helpful")}
+                        className="h-9 px-4"
+                      >
+                        👍 Helpful
+                      </Button>
+                      <Button
+                        variant={selectedFeedback === "not_helpful" ? "primary" : "secondary"}
+                        disabled={disabled}
+                        onClick={() => handleFeedback(index, "not_helpful")}
+                        className="h-9 px-4"
+                      >
+                        👎 Not Helpful
+                      </Button>
+                    </div>
+                    {rankBadge ? (
+                      <span
+                        className={`shrink-0 inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-bold tabular-nums tracking-tight ring-1 ring-inset ${rankBadge.className}`}
+                        aria-label={`Rank ${rankBadge.label}`}
+                      >
+                        {rankBadge.label}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
               </Card>
