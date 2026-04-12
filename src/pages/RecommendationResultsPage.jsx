@@ -17,9 +17,9 @@ const RecommendationResultsPage = () => {
   const [queryId, setQueryId] = useState("");
   const [feedbackSelection, setFeedbackSelection] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
-    // Reset feedback actions when a new query is submitted.
     setFeedbackSelection({});
     setFeedbackMessage("");
   }, [queryId]);
@@ -33,6 +33,7 @@ const RecommendationResultsPage = () => {
     setLoading(true);
     setError("");
     setFeedbackMessage("");
+    setHasSearched(true);
 
     try {
       const response = await recommendCourses(formData);
@@ -158,9 +159,15 @@ const RecommendationResultsPage = () => {
           </div>
         )}
 
-        {!loading && recommendations.length === 0 && !error && (
+        {!loading && recommendations.length === 0 && !error && !hasSearched && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-8 text-center text-slate-500">
             Submit a query to see recommendations.
+          </div>
+        )}
+
+        {!loading && recommendations.length === 0 && !error && hasSearched && (
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-8 text-center text-slate-500">
+            No courses found
           </div>
         )}
 
@@ -168,17 +175,25 @@ const RecommendationResultsPage = () => {
           {recommendations.map((item, index) => {
             const selectedFeedback = feedbackSelection[index];
             const disabled = Boolean(selectedFeedback);
+            const detailText = item.description || item.reason;
 
             return (
               <Card key={`${item.title}-${index}`} variant="default" className="p-5 bg-white">
                 <div className="space-y-3">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-                    <div className="text-sm text-slate-500">
-                      {item.platform} • {item.duration}
+                    {detailText ? (
+                      <p className="text-sm text-slate-600 leading-relaxed">{detailText}</p>
+                    ) : null}
+                    <div className="text-sm text-slate-500 font-medium mt-1">
+                      Platform: {item.platform || "Udemy"}
                     </div>
+                    {item.duration ? (
+                      <div className="text-sm text-slate-500 font-medium">
+                        Duration: {item.duration}
+                      </div>
+                    ) : null}
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{item.reason}</p>
 
                   <div className="flex items-center gap-2 pt-2">
                     <Button

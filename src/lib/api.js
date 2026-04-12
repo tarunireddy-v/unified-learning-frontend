@@ -1,4 +1,6 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_URL || "https://custody-imprecise-sloping.ngrok-free.dev"
+).replace(/\/$/, "");
 
 async function handleApiResponse(response) {
   if (!response.ok) {
@@ -9,9 +11,7 @@ async function handleApiResponse(response) {
       if (errorPayload?.detail) {
         message = String(errorPayload.detail);
       }
-    } catch {
-      // Keep default message when response body is not JSON.
-    }
+    } catch {}
 
     throw new Error(message);
   }
@@ -42,4 +42,3 @@ export async function sendFeedback(query_id, feedback) {
 
   return handleApiResponse(response);
 }
-

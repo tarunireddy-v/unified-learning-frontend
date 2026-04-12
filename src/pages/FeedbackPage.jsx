@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
+import { API_BASE_URL } from '../lib/api';
 import './FeedbackPage.css';
 
 const FeedbackPage = () => {
@@ -26,17 +27,41 @@ const FeedbackPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Mock submission
-        console.log('Feedback Submitted:', formData);
-        alert('Thank you for your feedback!');
-        navigate('/'); // Go back to dashboard
+
+        try {
+            const payload = {
+                user_id: "user_1",
+                course_id: "course_1",
+                rating: formData.rating,
+                category: formData.category,
+                comment: formData.comment
+            };
+
+            const response = await fetch(`${API_BASE_URL}/feedback`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit to backend');
+            }
+
+            alert('Feedback submitted successfully');
+            navigate('/');
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            alert('Failed to submit feedback');
+        }
     };
 
     return (
         <div className="feedback-page">
-            <button onClick={() => navigate('/')} className="btn-back">
+            <button type="button" onClick={() => navigate('/')} className="btn-back">
                 <ArrowLeft size={16} /> Back to Dashboard
             </button>
 
@@ -47,7 +72,6 @@ const FeedbackPage = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="feedback-form">
-
 
                     <div className="form-group">
                         <label htmlFor="category">Feedback Category</label>
