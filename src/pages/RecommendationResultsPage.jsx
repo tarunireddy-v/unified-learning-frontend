@@ -33,6 +33,9 @@ const RANK_BADGES = [
 const RecommendationResultsPage = () => {
   const location = useLocation();
   const isExploreMode = location.state?.fromExplore === true;
+  
+  const email = localStorage.getItem("email");
+  console.log("EMAIL:", email);
 
   const [formData, setFormData] = useState({
     query: "",
@@ -338,7 +341,7 @@ const RecommendationResultsPage = () => {
                       >
                         👎 Not Helpful
                       </Button>
-                      {localStorage.getItem("user") !== null && (
+                      {email && (
                         <Button
                           variant={savingCourse[index] === "saved" ? "primary" : "secondary"}
                           disabled={savingCourse[index] === "saved" || savingCourse[index] === "saving"}
