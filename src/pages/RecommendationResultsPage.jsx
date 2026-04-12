@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import Select from "../components/Select";
-import { recommendCourses, sendFeedback } from "../lib/api";
+import { recommendCourses, sendFeedback, saveCourseApi } from "../lib/api";
 
 function courseExternalUrl(raw) {
   const u = (raw || "").trim();
@@ -30,6 +31,9 @@ const RANK_BADGES = [
 ];
 
 const RecommendationResultsPage = () => {
+  const location = useLocation();
+  const isExploreMode = location.state?.fromExplore === true;
+
   const [formData, setFormData] = useState({
     query: "",
     level: "Beginner",
@@ -43,6 +47,7 @@ const RecommendationResultsPage = () => {
   const [feedbackSelection, setFeedbackSelection] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [savingCourse, setSavingCourse] = useState({});
 
   useEffect(() => {
     setFeedbackSelection({});
@@ -85,6 +90,49 @@ const RecommendationResultsPage = () => {
       setFeedbackMessage("Thanks for your feedback.");
     } catch (err) {
       setError(err.message || "Could not submit feedback.");
+    }
+  };
+
+  const handleInterested = async (courseIndex) => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      alert("Please login first");
+      return;
+    }
+
+    setSavingCourse((prev) => ({ ...prev, [courseIndex]: "saving" }));
+    setError("");
+    setFeedbackMessage("");
+
+    try {
+      const course = recommendations[courseIndex];
+      const response = await fetch("http://127.0.0.1:8000/save-course", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          title: course.title,
+          platform: course.platform,
+          duration: course.duration,
+          link: course.url || course.link || ""
+        })
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message);
+      }
+
+      alert("Course saved successfully");
+      setSavingCourse((prev) => ({ ...prev, [courseIndex]: "saved" }));
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save course");
+      setSavingCourse((prev) => ({ ...prev, [courseIndex]: false }));
     }
   };
 
@@ -232,7 +280,7 @@ const RecommendationResultsPage = () => {
                       Platform: {item.platform || "—"}
                     </div>
                     {item.duration &&
-                    String(item.duration).trim().toLowerCase() !== "short" ? (
+                      String(item.duration).trim().toLowerCase() !== "short" ? (
                       <div className="text-sm text-slate-500 font-medium">
                         Duration: {item.duration}
                       </div>
@@ -262,6 +310,16 @@ const RecommendationResultsPage = () => {
                       >
                         👎 Not Helpful
                       </Button>
+                      {localStorage.getItem("user") !== null && (
+                        <Button
+                          variant={savingCourse[index] === "saved" ? "primary" : "secondary"}
+                          disabled={savingCourse[index] === "saved" || savingCourse[index] === "saving"}
+                          onClick={() => handleInterested(index)}
+                          className="h-9 px-4 ml-2 border-slate-300 text-slate-700 bg-white hover:bg-slate-50"
+                        >
+                          {savingCourse[index] === "saving" ? "Saving..." : savingCourse[index] === "saved" ? "✓ Saved" : "Interested"}
+                        </Button>
+                      )}
                     </div>
                     {rankBadge ? (
                       <span

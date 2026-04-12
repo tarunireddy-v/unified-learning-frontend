@@ -15,7 +15,7 @@ const LoginPage = ({ handleLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         if (password.length > 72) {
             setError('Password too long (max 72 characters)');
             return;
@@ -27,10 +27,14 @@ const LoginPage = ({ handleLogin }) => {
             if (data && data.success === false) {
                 throw new Error(data.message || 'Login failed.');
             }
+
+            localStorage.setItem("email", data.email || email);
+            localStorage.setItem("name", data.name || email.split('@')[0]);
+
             if (handleLogin) {
-                const userObj = data.user || { name: email.split('@')[0], email: email };
+                const userObj = data.user || { name: email.split('@')[0], email: data.email || email };
                 handleLogin(userObj);
-                navigate('/dashboard');
+                navigate('/recommendations');
             }
         } catch (err) {
             setError(err.message || 'Login failed. Please check your credentials.');

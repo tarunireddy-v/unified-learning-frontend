@@ -57,51 +57,51 @@ const Layout = ({ children, isLoggedIn, handleLogout }) => {
 
                     {/* Right: Navigation + Profile */}
                     {isLoggedIn && (
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-1">
-                            {['/dashboard', '/history', '/recommendations'].map((path) => {
-                                const label = path === '/recommendations' ? 'Recommendations'
-                                    : path === '/history' ? 'History'
-                                        : path === '/dashboard' ? 'Progress'
-                                            : 'Feedback';
-                                const active = isActive(path);
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-1">
+                                {['/recommendations', '/history', '/dashboard'].map((path) => {
+                                    const label = path === '/recommendations' ? 'Recommendations'
+                                        : path === '/history' ? 'History'
+                                            : path === '/dashboard' ? 'Progress'
+                                                : 'Feedback';
+                                    const active = isActive(path);
 
-                                return (
-                                    <Link
-                                        key={path}
-                                        to={path}
-                                        className={`
+                                    return (
+                                        <Link
+                                            key={path}
+                                            to={path}
+                                            className={`
                                 text-[14px] font-medium px-3 py-2 rounded-md transition-all duration-200
                                 ${active
-                                                ? 'text-slate-900 bg-slate-100'
-                                                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/50'
-                                            }
+                                                    ? 'text-slate-900 bg-slate-100'
+                                                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/50'
+                                                }
                             `}
-                                    >
-                                        {label}
-                                    </Link>
-                                );
-                            })}
+                                        >
+                                            {label}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Divider */}
+                            <div className="h-4 w-px bg-slate-200"></div>
+
+                            {/* Sign Out Button */}
+                            <button
+                                onClick={handleSignOut}
+                                className="text-[14px] font-medium text-slate-500 hover:text-red-500 transition-colors"
+                            >
+                                Sign Out
+                            </button>
+
+                            {/* Profile Avatar */}
+                            <Link to="/profile" className="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-slate-800 transition-colors shadow-sm focus:ring-2 ring-offset-2 ring-slate-200">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </Link>
                         </div>
-
-                        {/* Divider */}
-                        <div className="h-4 w-px bg-slate-200"></div>
-
-                        {/* Sign Out Button */}
-                        <button 
-                            onClick={handleSignOut}
-                            className="text-[14px] font-medium text-slate-500 hover:text-red-500 transition-colors"
-                        >
-                            Sign Out
-                        </button>
-
-                        {/* Profile Avatar */}
-                        <Link to="/profile" className="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-slate-800 transition-colors shadow-sm focus:ring-2 ring-offset-2 ring-slate-200">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </Link>
-                    </div>
                     )}
                 </div>
             </nav>

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getProfileApi, updateProfileApi } from '../lib/api';
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const [name, setName] = useState(user?.name || '');
-    const [email, setEmail] = useState(user?.email || '');
+    const [name, setName] = useState(localStorage.getItem('name') || '');
+    const [email, setEmail] = useState(localStorage.getItem('email') || '');
     const [bio, setBio] = useState('');
     const [skills, setSkills] = useState([]);
-    const [newSkill, setNewSkill] = useState('');
+    const [skillsInput, setSkillsInput] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -25,8 +25,9 @@ const ProfilePage = ({ user }) => {
             } catch (err) {
                 console.warn("Backend fetch failed, loading local fallback.", err);
                 if (mounted) {
-                    const localBio = localStorage.getItem('profile_bio');
-                    const localSkills = localStorage.getItem('profile_skills');
+                    const fallbackEmail = email || 'guest';
+                    const localBio = localStorage.getItem(`bio_${fallbackEmail}`);
+                    const localSkills = localStorage.getItem(`skills_${fallbackEmail}`);
                     if (localBio !== null) setBio(localBio);
                     if (localSkills !== null) setSkills(JSON.parse(localSkills));
                 }
@@ -40,32 +41,27 @@ const ProfilePage = ({ user }) => {
 
     const handleSave = async () => {
         if (!isEditing) {
+            setSkillsInput(skills.join(', '));
             setIsEditing(true);
             return;
         }
-        
+
         setError('');
+        const updatedSkills = skillsInput.split(',').map(s => s.trim()).filter(Boolean);
         try {
-            await updateProfileApi({ name, email, bio, skills });
+            await updateProfileApi({ name, email, bio, skills: updatedSkills });
         } catch (err) {
             console.warn("Backend save failed, caching locally as fallback.", err);
         } finally {
-            localStorage.setItem('profile_bio', bio);
-            localStorage.setItem('profile_skills', JSON.stringify(skills));
+            const saveEmail = email || 'guest';
+            localStorage.setItem(`bio_${saveEmail}`, bio);
+            localStorage.setItem(`skills_${saveEmail}`, JSON.stringify(updatedSkills));
+            setSkills(updatedSkills);
             setIsEditing(false);
         }
     };
 
-    const handleAddSkill = () => {
-        if (newSkill.trim() && !skills.includes(newSkill.trim())) {
-            setSkills([...skills, newSkill.trim()]);
-            setNewSkill('');
-        }
-    };
 
-    const handleRemoveSkill = (skillToRemove) => {
-        setSkills(skills.filter(s => s !== skillToRemove));
-    };
 
     return (
         <div className="w-full flex flex-col items-center pt-8 animate-fade-in-up">
@@ -73,7 +69,7 @@ const ProfilePage = ({ user }) => {
             <div className="w-full max-w-3xl flex flex-col items-center mb-12 relative">
                 <h1 className="text-3xl font-bold text-[#0F2B5B] tracking-tight mb-6">Profile</h1>
                 <div className="w-full h-[1px] bg-slate-200"></div>
-                <button 
+                <button
                     onClick={handleSave}
                     className="absolute right-0 top-0 px-4 py-2 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100 transition-colors"
                 >
@@ -146,47 +142,28 @@ const ProfilePage = ({ user }) => {
                     <div className="grid grid-cols-[100px_1fr] gap-4">
                         <span className="text-[#0F2B5B] font-bold text-sm pt-0.5">Skills</span>
                         <div className="min-h-[100px] flex flex-col gap-3">
-                            {isEditing && (
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="text"
-                                        value={newSkill}
-                                        onChange={(e) => setNewSkill(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
-                                        placeholder="Add a skill"
-                                        className="flex-1 text-sm p-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
-                                    />
-                                    <button 
-                                        onClick={handleAddSkill}
-                                        className="px-3 py-2 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100"
-                                    >
-                                        Add
-                                    </button>
-                                </div>
-                            )}
-                            
-                            <ul className="space-y-2">
-                                {skills.length === 0 && !isEditing ? (
-                                    <li className="text-slate-400 text-sm italic">No skills added yet.</li>
-                                ) : (
-                                    skills.map((skill, index) => (
-                                        <li key={index} className="flex items-center justify-between text-slate-600 text-sm border-b border-slate-50 pb-1">
-                                            <div className="flex items-center">
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    value={skillsInput}
+                                    onChange={(e) => setSkillsInput(e.target.value)}
+                                    placeholder="Enter skills separated by commas e.g. React, Python"
+                                    className="w-full text-sm p-3 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+                                />
+                            ) : (
+                                <ul className="space-y-2">
+                                    {skills.length === 0 ? (
+                                        <li className="text-slate-400 text-sm italic">No skills added yet.</li>
+                                    ) : (
+                                        skills.map((skill, index) => (
+                                            <li key={index} className="flex items-center text-slate-600 text-sm border-b border-slate-50 pb-1">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mr-2.5"></div>
                                                 {skill}
-                                            </div>
-                                            {isEditing && (
-                                                <button 
-                                                    onClick={() => handleRemoveSkill(skill)}
-                                                    className="text-red-400 hover:text-red-600 text-xs font-semibold px-2"
-                                                >
-                                                    Remove
-                                                </button>
-                                            )}
-                                        </li>
-                                    ))
-                                )}
-                            </ul>
+                                            </li>
+                                        ))
+                                    )}
+                                </ul>
+                            )}
                         </div>
                     </div>
                 </div>

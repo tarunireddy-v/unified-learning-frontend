@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { fetchLearningData } from '../services/learningData';
 import './LearningProgress.css';
 
 const LearningProgress = () => {
@@ -10,8 +9,17 @@ const LearningProgress = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await fetchLearningData();
-                setData(result);
+                const email = localStorage.getItem("email");
+                if (!email) {
+                    setError("User not logged in");
+                    setLoading(false);
+                    return;
+                }
+                const res = await fetch(`http://127.0.0.1:8000/progress?email=${email}`);
+                const data = await res.json();
+                console.log("PROGRESS DATA:", data);
+
+                setData(data);
                 setError(null);
             } catch (err) {
                 console.error("Error loading data:", err);
@@ -112,7 +120,7 @@ const LearningProgress = () => {
                     <div className="graph-bars">
                         {data.activity.map((val, idx) => (
                             <div key={idx} className="graph-bar-col">
-                                <div className="graph-bar" style={{ height: `${val}%` }}></div>
+                                <div className="graph-bar" style={{ height: `${val === 0 ? 5 : val * 20}px` }}></div>
                                 <span className="day-label">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][idx]}</span>
                             </div>
                         ))}

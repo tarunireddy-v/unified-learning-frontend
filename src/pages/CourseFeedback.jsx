@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
+import { submitCourseFeedbackApi } from '../lib/api';
 import './FeedbackPage.css'; // Reusing existing styles
 
 const CourseFeedback = () => {
@@ -9,16 +10,22 @@ const CourseFeedback = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
 
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        // Persist feedback state
-        localStorage.setItem(`course_feedback_${courseId}`, 'true');
-
-        console.log(`Feedback for Course ${courseId}:`, { rating, comment });
-        alert('Course feedback submitted successfully!');
-
-        navigate('/history');
+        try {
+            await submitCourseFeedbackApi(courseId, rating, comment);
+            // Persist feedback state
+            localStorage.setItem(`course_feedback_${courseId}`, 'true');
+            navigate('/history');
+        } catch (error) {
+            alert(error.message || "Failed to submit feedback. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -62,8 +69,8 @@ const CourseFeedback = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn-submit">
-                        Submit Feedback
+                    <button type="submit" className="btn-submit" disabled={loading}>
+                        {loading ? "Submitting..." : "Submit Feedback"}
                     </button>
                 </form>
             </div>

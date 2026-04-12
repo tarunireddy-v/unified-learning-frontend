@@ -13,25 +13,27 @@ import CourseFeedback from './pages/CourseFeedback';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('user') !== null;
+    return localStorage.getItem('email') !== null;
   });
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    return {
+      email: localStorage.getItem('email'),
+      name: localStorage.getItem('name')
+    };
   });
 
   const handleLogin = (userData) => {
     setIsLoggedIn(true);
     setUser(userData);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('email', userData.email);
+    localStorage.setItem('name', userData.name);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUser(null);
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
+    localStorage.removeItem('email');
+    localStorage.removeItem('name');
   };
 
   return (

@@ -23,7 +23,7 @@ async function handleApiResponse(response) {
       } else if (errorPayload?.detail) {
         message = String(errorPayload.detail);
       }
-    } catch {}
+    } catch { }
 
     throw new Error(message);
   }
@@ -107,3 +107,62 @@ export async function updateProfileApi(data) {
   });
   return handleApiResponse(response);
 }
+
+export async function saveCourseApi(courseData) {
+  const email = localStorage.getItem("email");
+  if (!email) {
+    alert("Please login first");
+    throw new Error("Unauthorized");
+  }
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const response = await apiFetch("/save-course", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(courseData),
+  });
+  return handleApiResponse(response);
+}
+
+export const getHistoryApi = async () => {
+  const email = localStorage.getItem("email");
+
+  if (!email) {
+    throw new Error("User not logged in");
+  }
+
+  const response = await fetch(
+    `http://127.0.0.1:8000/history?email=${email}`
+  );
+
+  const data = await response.json();
+
+  return data;
+};
+
+export async function submitCourseFeedbackApi(courseId, rating, comment) {
+  const headers = { "Content-Type": "application/json" };
+
+  const response = await apiFetch("/feedback", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ courseId, rating, comment }),
+  });
+  return handleApiResponse(response);
+}
+
+export const getProgressApi = async () => {
+  const email = localStorage.getItem("email");
+
+  if (!email) {
+    throw new Error("User not logged in");
+  }
+
+  const response = await fetch(
+    `http://127.0.0.1:8000/progress?email=${email}`
+  );
+
+  return await response.json();
+};

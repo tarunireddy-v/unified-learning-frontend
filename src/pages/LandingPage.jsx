@@ -43,7 +43,7 @@ const LandingPage = () => {
                         </Button>
                         <Button
                             variant="ghost"
-                            onClick={() => navigate('/recommendations')}
+                            onClick={() => navigate('/recommendations', { state: { fromExplore: true } })}
                             className="text-slate-500 hover:text-slate-900 h-12"
                         >
                             Explore Recommendations

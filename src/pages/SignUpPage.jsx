@@ -24,7 +24,7 @@ const SignUpPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         if (formData.password.length > 72) {
             setError('Password too long (max 72 characters)');
             return;
@@ -41,6 +41,9 @@ const SignUpPage = () => {
             if (data && data.success === false) {
                 throw new Error(data.message || 'Signup failed.');
             }
+
+            localStorage.setItem("email", formData.email);
+            localStorage.setItem("name", formData.name);
             navigate('/login');
         } catch (err) {
             setError(err.message || 'Signup failed. Please try again.');
