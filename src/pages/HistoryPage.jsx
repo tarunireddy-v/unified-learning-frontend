@@ -103,10 +103,7 @@ const HistoryPage = () => {
                                 </button>
                             )}
 
-                            <Badge variant={item.variant} className="w-24 justify-center py-1">{item.status}</Badge>
-                            <div className="text-slate-200 group-hover:text-slate-400 transition-colors transform group-hover:translate-x-1 duration-200">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" /></svg>
-                            </div>
+                            {/* Removed empty badge causing layout gap */}
                         </div>
 
                     </div>

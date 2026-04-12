@@ -58,6 +58,30 @@ const RecommendationResultsPage = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const trackActivity = async () => {
+    const email = localStorage.getItem("email");
+    if (!email) return;
+    try {
+      await fetch(`http://127.0.0.1:8000/track-activity?email=${email}&action=recommend`, {
+        method: "POST"
+      });
+    } catch (err) {
+      console.error("Failed to track activity", err);
+    }
+  };
+
+  const loadProgress = async () => {
+    const email = localStorage.getItem("email");
+    if (!email) return;
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/progress?email=${email}`);
+      const data = await res.json();
+      console.log("Updated activity:", data.activity);
+    } catch (err) {
+      console.error("Failed to fetch progress", err);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -69,6 +93,10 @@ const RecommendationResultsPage = () => {
       const response = await recommendCourses(formData);
       setRecommendations(response.recommendations || []);
       setQueryId(response.query_id || "");
+
+      // Track activity and fetch progress
+      await trackActivity();
+      await loadProgress();
     } catch (err) {
       setError(err.message || "Failed to fetch recommendations.");
       setRecommendations([]);

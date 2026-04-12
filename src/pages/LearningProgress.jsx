@@ -15,6 +15,8 @@ const LearningProgress = () => {
                     setLoading(false);
                     return;
                 }
+                
+                console.log("Fetching progress for:", email);
                 const res = await fetch(`http://127.0.0.1:8000/progress?email=${email}`);
                 const data = await res.json();
                 console.log("PROGRESS DATA:", data);

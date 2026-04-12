@@ -10,6 +10,15 @@ const ProfilePage = () => {
     const [skillsInput, setSkillsInput] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    const [profileImage, setProfileImage] = useState(null);
+
+    useEffect(() => {
+        const email = localStorage.getItem("email");
+        const savedImage = localStorage.getItem(`profile_image_${email}`);
+        if (savedImage) {
+            setProfileImage(savedImage);
+        }
+    }, []);
 
     useEffect(() => {
         let mounted = true;
@@ -61,6 +70,22 @@ const ProfilePage = () => {
         }
     };
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const base64Image = reader.result;
+            setProfileImage(base64Image);
+            const email = localStorage.getItem("email");
+            localStorage.setItem(`profile_image_${email}`, base64Image);
+        };
+
+        reader.readAsDataURL(file);
+    };
+
 
 
     return (
@@ -84,19 +109,33 @@ const ProfilePage = () => {
 
             {/* Avatar - Positioned to overlook content */}
             <div className="relative z-10 -mb-14">
-                <div className="w-28 h-28 rounded-full bg-blue-100 flex items-center justify-center border-4 border-white shadow-sm">
-                    {/* Simplified User Silhouette Icon */}
-                    <svg className="w-12 h-12 text-blue-300" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
+                <div className="w-28 h-28 rounded-full bg-blue-100 flex items-center justify-center border-4 border-white shadow-sm overflow-hidden">
+                    {profileImage ? (
+                        <img
+                            src={profileImage}
+                            className="w-28 h-28 rounded-full object-cover"
+                            alt="Profile"
+                        />
+                    ) : (
+                        <svg className="w-12 h-12 text-blue-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    )}
                 </div>
             </div>
 
             {/* Content Card */}
             <div className="bg-white w-full max-w-2xl rounded-xl shadow-sm border border-slate-100 pt-16 pb-8 px-10 relative">
                 {/* Upload Button */}
-                <div className="flex justify-center mb-8">
-                    <button className="px-4 py-1.5 bg-slate-100 text-slate-600 text-sm font-medium rounded-md hover:bg-slate-200 transition-colors">
+                <div className="flex justify-center mb-8 relative">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        title="Upload New Photo"
+                    />
+                    <button className="px-4 py-1.5 bg-slate-100 text-slate-600 text-sm font-medium rounded-md hover:bg-slate-200 transition-colors pointer-events-none">
                         Upload New Photo
                     </button>
                 </div>

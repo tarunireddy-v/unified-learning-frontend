@@ -123,9 +123,12 @@ const Layout = ({ children, isLoggedIn, handleLogout }) => {
                         <span className="font-semibold text-slate-900 text-sm tracking-tight">
                             Unified Learning
                         </span>
-                        <Link to="/feedback" className="text-xs text-slate-500 hover:text-slate-900 transition-colors ml-2 font-medium">
+                        <span 
+                            onClick={() => navigate("/feedback")}
+                            className="text-xs text-slate-500 hover:text-slate-900 transition-colors ml-2 font-medium cursor-pointer"
+                        >
                             Feedback
-                        </Link>
+                        </span>
                     </div>
 
                     {/* Center: Copyright */}
